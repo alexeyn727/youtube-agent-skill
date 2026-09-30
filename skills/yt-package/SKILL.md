@@ -5,6 +5,7 @@ description: >-
   checking truncation, duplication and vagueness before publish. Use for
   "title ideas", "what should I call this", "thumbnail text", "my CTR is
   bad", packaging, or any request to rename or repackage an existing video.
+  По-русски: «придумай заголовок», «название для видео», «текст на обложку», «низкий CTR», «переупакуй ролик».
 ---
 
 # yt-package
@@ -42,6 +43,18 @@ python3 title.py titles.txt            # one per line, ranked
 Generate ten titles, run them all through `title.py`, show the user the top three with their scores
 and the specific issue on each. For the winner, write the thumbnail brief: the expression, the
 framing, the three words, and what the background has to do to hold contrast at feed size.
+
+## Русский язык
+
+- Если пользователь пишет по-русски или его `voice.md` на русском — всё, что отдаёшь, пиши по-русски:
+  живой разговорный язык, который можно произнести вслух, без канцелярита и кальки с английского.
+- Формулы хуков бери из `hooks.json` в русской версии: `name_ru`, `shape_ru`, `example_ru`,
+  `fails_when_ru`. Английские поля — для англоязычных роликов.
+- `title.py` проверяет русские заголовки: русские «пустые» слова («невероятный», «секрет», «шок»), служебные слова и повтор обложки с заголовком по основе слова («канал» на обложке и «канала» в заголовке — повтор).
+- Оценки в русских списках — перевод английской эвристики, отдельной калибровки на русских роликах
+  не было. Низкий балл — повод перечитать, высокий — не обещание.
+- Финальный вопрос по-русски: **публикуем или правим?**
+- На Windows, если `python3` не находится, запускай `python`.
 
 ## The gate
 

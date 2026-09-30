@@ -4,6 +4,7 @@ description: >-
   Draft replies to YouTube comments in the creator's voice, triaged by which
   ones are worth answering. Use for "reply to my comments", "handle the
   comment section", "someone asked X", or a pasted comment thread.
+  По-русски: «ответь на комментарии», «разбери комментарии», «что ответить зрителю».
 ---
 
 # yt-comment
@@ -44,6 +45,17 @@ Sort what the user pastes into four piles and say how many are in each before wr
 
 Say which ONE comment to pin and why. Pin the question the most people also have, not the nicest
 one. Heart generously - it costs nothing and it is visible.
+
+## Русский язык
+
+- Если пользователь пишет по-русски или его `voice.md` на русском — всё, что отдаёшь, пиши по-русски:
+  живой разговорный язык, который можно произнести вслух, без канцелярита и кальки с английского.
+- Формулы хуков бери из `hooks.json` в русской версии: `name_ru`, `shape_ru`, `example_ru`,
+  `fails_when_ru`. Английские поля — для англоязычных роликов.
+- Оценки в русских списках — перевод английской эвристики, отдельной калибровки на русских роликах
+  не было. Низкий балл — повод перечитать, высокий — не обещание.
+- Финальный вопрос по-русски: **публикуем или правим?**
+- На Windows, если `python3` не находится, запускай `python`.
 
 ## The gate
 

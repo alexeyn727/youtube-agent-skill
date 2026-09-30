@@ -4,6 +4,7 @@ description: >-
   Write the description, tags and search-facing text for a YouTube video,
   aimed at the query a real person types. Use for "write my description",
   "tags", "SEO", "help this video get found", "nobody is finding this".
+  По-русски: «описание к видео», «теги», «SEO для ролика», «чтобы видео находили в поиске».
 ---
 
 # yt-seo
@@ -40,6 +41,17 @@ a strategy and stuffing unrelated ones is against the terms.
 Before handing anything over, write the three search queries this video should win, and check the
 title and first two description lines contain the words in those queries. If they do not, the
 problem is the title, not the description.
+
+## Русский язык
+
+- Если пользователь пишет по-русски или его `voice.md` на русском — всё, что отдаёшь, пиши по-русски:
+  живой разговорный язык, который можно произнести вслух, без канцелярита и кальки с английского.
+- Формулы хуков бери из `hooks.json` в русской версии: `name_ru`, `shape_ru`, `example_ru`,
+  `fails_when_ru`. Английские поля — для англоязычных роликов.
+- Оценки в русских списках — перевод английской эвристики, отдельной калибровки на русских роликах
+  не было. Низкий балл — повод перечитать, высокий — не обещание.
+- Финальный вопрос по-русски: **публикуем или правим?**
+- На Windows, если `python3` не находится, запускай `python`.
 
 ## The gate
 

@@ -14,20 +14,24 @@ is scored as a MULTIPLE OF ITS OWN CHANNEL'S MEDIAN, which needs at least four v
 to mean anything - the tool says so rather than quietly ranking on noise.
 
 The formula comes from skills/yt-script/hooks.json, matched against the TITLE. It is a judgement
-about the words on screen, not a claim about why the video worked.
+about the words on screen, not a claim about why the video worked. A Cyrillic title is matched
+against the match_ru patterns and labelled with the Russian formula name.
 """
 import json, os, re, statistics, sys
 
+if hasattr(sys.stdout, "reconfigure"): sys.stdout.reconfigure(encoding="utf-8")
+
 HERE = os.path.dirname(os.path.abspath(__file__))
-FORMULAS = json.load(open(os.path.join(HERE, "..", "yt-script", "hooks.json")))["hooks"]
+FORMULAS = json.load(open(os.path.join(HERE, "..", "yt-script", "hooks.json"), encoding="utf-8"))["hooks"]
 
 def classify(title):
+    ru = bool(re.search(r"[а-яё]", title, re.I))
     scored = []
     for f in FORMULAS:
-        n = sum(1 for p in f["match"] if re.search(p, title, re.I))
-        if n: scored.append((n, f["name"]))
+        n = sum(1 for p in f.get("match_ru" if ru else "match", []) if re.search(p, title, re.I))
+        if n: scored.append((n, f.get("name_ru", f["name"]) if ru else f["name"]))
     scored.sort(reverse=True)
-    return scored[0][1] if scored else "Unclassified"
+    return scored[0][1] if scored else ("Без формулы" if ru else "Unclassified")
 
 def main():
     a = sys.argv[1:]
@@ -35,7 +39,7 @@ def main():
     lo = float(a[a.index("--min") + 1]) if "--min" in a else 1.5
     files = [x for x in a if not x.startswith("--") and not re.match(r"^[\d.]+$", x)]
     if not files or not os.path.exists(files[0]): print(__doc__); sys.exit(1)
-    rows = json.load(open(files[0]))
+    rows = json.load(open(files[0], encoding="utf-8-sig"))
     if isinstance(rows, dict): rows = rows.get("videos", [])
     by = {}
     for r in rows: by.setdefault(r.get("channel", "?"), []).append(r)
@@ -53,7 +57,7 @@ def main():
                         "formula": classify(v.get("title", "")), "url": v.get("url", "")})
     out = [r for r in out if r["multiple"] >= lo]
     out.sort(key=lambda r: -r["multiple"])
-    if as_json: print(json.dumps({"outliers": out, "skipped_thin_channels": thin}, indent=1)); return
+    if as_json: print(json.dumps({"outliers": out, "skipped_thin_channels": thin}, indent=1, ensure_ascii=False)); return
     print(f"\n  {len(rows)} videos across {len(by)} channels, outliers at {lo}x or better\n")
     for r in out[:25]:
         print(f"    {r['multiple']:5.2f}x  {r['views']:>9,}  vs {r['median']:>9,} median   {r['channel'][:22]:<22} {r['title'][:52]}")

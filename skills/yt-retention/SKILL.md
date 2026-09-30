@@ -5,6 +5,7 @@ description: >-
   actually leave, then say what to change. Use for "why do people stop
   watching", "my retention is bad", a pasted retention chart or CSV, or "fix
   my pacing".
+  По-русски: «почему не досматривают», «плохое удержание», «где уходят зрители», «график удержания».
 ---
 
 # yt-retention
@@ -34,6 +35,18 @@ the download icon -> "Audience retention".
 Name the single biggest leak and one change for it. Not a list of five. Then, only if asked, the
 rest. And if the hook leak is healthy and the slide is flat, say the video is fine and the problem
 is packaging - send them to `/yt-package`.
+
+## Русский язык
+
+- Если пользователь пишет по-русски или его `voice.md` на русском — всё, что отдаёшь, пиши по-русски:
+  живой разговорный язык, который можно произнести вслух, без канцелярита и кальки с английского.
+- Формулы хуков бери из `hooks.json` в русской версии: `name_ru`, `shape_ru`, `example_ru`,
+  `fails_when_ru`. Английские поля — для англоязычных роликов.
+- `retention.py` читает выгрузку из русской локали: файл через точку с запятой и числа вида «45,3» (иначе 45,3% превратилось бы в 453%).
+- Оценки в русских списках — перевод английской эвристики, отдельной калибровки на русских роликах
+  не было. Низкий балл — повод перечитать, высокий — не обещание.
+- Финальный вопрос по-русски: **публикуем или правим?**
+- На Windows, если `python3` не находится, запускай `python`.
 
 ## The gate
 

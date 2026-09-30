@@ -6,7 +6,7 @@
 
 Finds three things and prints the cuts as a list you can act on, newest problem first:
   DEAD    gaps between spoken cues longer than the floor
-  FILLER  cues that are only filler ("um", "so yeah", "basically")
+  FILLER  cues that are only filler ("um", "so yeah", "basically"; "эм", "ну вот", "короче")
   REPEAT  a sentence restarted - the second take of the same opening
 
 WHAT IT DOES NOT DO. It does not cut the file. It prints an EDL, the total it would remove, and the
@@ -14,8 +14,13 @@ runtime you would land on, and you apply it in whatever editor you use. Nothing 
 """
 import json, os, re, sys
 
-FILLER_ONLY = re.compile(r"^[\s,.-]*((um+|uh+|er+|ah+|so|okay|ok|right|yeah|like|anyway|basically|"
-                         r"actually|you know|i mean|let me see|hold on)[\s,.-]*)+$", re.I)
+if hasattr(sys.stdout, "reconfigure"): sys.stdout.reconfigure(encoding="utf-8")
+
+FILLER_ONLY = re.compile(r"^[\s,.…-]*((um+|uh+|er+|ah+|so|okay|ok|right|yeah|like|anyway|basically|"
+                         r"actually|you know|i mean|let me see|hold on|"
+                         # Russian fillers, the ones auto-captions and whisper actually write down
+                         r"э+м*|м+|а+|ну|вот|так|короче|типа|значит|ладно|окей|ок|ага|угу|да|слушай|смотри|"
+                         r"в общем|как бы|собственно|это самое|скажем так|так сказать|то есть|сейчас|щас)[\s,.…-]*)+$", re.I)
 
 def parse_ts(s):
     s = s.strip().replace(",", ".")
@@ -23,7 +28,7 @@ def parse_ts(s):
     return int(p[0]) * 3600 + int(p[1]) * 60 + float(p[2]) if len(p) == 3 else int(p[0]) * 60 + float(p[1])
 
 def load(path):
-    raw = open(path, encoding="utf-8", errors="replace").read()
+    raw = open(path, encoding="utf-8-sig", errors="replace").read()
     if path.endswith(".json"):
         d = json.loads(raw)
         segs = d.get("segments", d if isinstance(d, list) else [])
@@ -38,7 +43,7 @@ def load(path):
             cur[2].append(line.strip())
     return [(a, b, " ".join(t)) for a, b, t in cues if t]
 
-def norm(t): return re.sub(r"[^a-z ]", "", t.lower()).split()
+def norm(t): return re.sub(r"[^a-zа-я ]", "", t.lower().replace("ё", "е")).split()
 
 def main():
     a = sys.argv[1:]

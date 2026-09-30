@@ -5,6 +5,7 @@ description: >-
   by how far each video beat its own channel, then name the formula. Use for
   "what's working right now", "find viral videos in my niche", "why did this
   blow up", competitor research, or a swipe file.
+  По-русски: «что сейчас залетает», «вирусные ролики в нише», «разбор конкурентов», «почему этот ролик выстрелил».
 ---
 
 # yt-viral
@@ -38,6 +39,18 @@ should say so when you present it.
 What to hand back: the top five with their multiples, the formula each used, and the ONE structural
 thing they share. Then the harder line - which of those the user could actually make this week, in
 their voice, with what they have.
+
+## Русский язык
+
+- Если пользователь пишет по-русски или его `voice.md` на русском — всё, что отдаёшь, пиши по-русски:
+  живой разговорный язык, который можно произнести вслух, без канцелярита и кальки с английского.
+- Формулы хуков бери из `hooks.json` в русской версии: `name_ru`, `shape_ru`, `example_ru`,
+  `fails_when_ru`. Английские поля — для англоязычных роликов.
+- `swipe.py` узнаёт формулу и в русских заголовках и подписывает её русским названием.
+- Оценки в русских списках — перевод английской эвристики, отдельной калибровки на русских роликах
+  не было. Низкий балл — повод перечитать, высокий — не обещание.
+- Финальный вопрос по-русски: **публикуем или правим?**
+- На Windows, если `python3` не находится, запускай `python`.
 
 ## The gate
 
