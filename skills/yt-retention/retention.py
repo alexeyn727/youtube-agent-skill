@@ -16,20 +16,33 @@ It reports three things, because they are three different problems with three di
 
 With --transcript it prints what you were saying at each cliff, which is the only version of this
 report you can act on without scrubbing the video yourself.
+
+Russian-locale exports work too: a file separated by semicolons, or with numbers like "45,3", is
+read with a decimal comma, so 45,3% stays 45.3 instead of becoming 453.
 """
 import csv, json, os, re, sys
+
+if hasattr(sys.stdout, "reconfigure"): sys.stdout.reconfigure(encoding="utf-8")
 
 def load_csv(path):
     rows = []
     with open(path, newline="", encoding="utf-8-sig", errors="replace") as fh:
-        for r in csv.reader(fh):
-            nums = []
-            for c in r:
-                c = c.strip().replace("%", "").replace(",", "")
-                try: nums.append(float(c))
-                except ValueError: nums.append(None)
-            vals = [n for n in nums if n is not None]
-            if len(vals) >= 2: rows.append((vals[0], vals[1]))
+        text = fh.read()
+    first = next((l for l in text.splitlines() if l.strip()), "")
+    delim = ";" if first.count(";") > first.count(",") else ","
+    table = list(csv.reader(text.splitlines(), delimiter=delim))
+    # Decimal comma: a semicolon file (Excel in a Russian locale), or any cell like 45,3 whose comma
+    # is not followed by exactly three digits (1,234 stays a thousands separator).
+    dec = delim == ";" or any(re.fullmatch(r"-?\d+,(\d{1,2}|\d{4,})%?", c.strip()) for r in table for c in r)
+    for r in table:
+        nums = []
+        for c in r:
+            c = re.sub(r"[%\s\u00a0]", "", c)
+            c = c.replace(",", ".") if dec else c.replace(",", "")
+            try: nums.append(float(c))
+            except ValueError: nums.append(None)
+        vals = [n for n in nums if n is not None]
+        if len(vals) >= 2: rows.append((vals[0], vals[1]))
     return rows
 
 def main():

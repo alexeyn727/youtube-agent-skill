@@ -1,5 +1,7 @@
 # The YouTube agent skill
 
+**Русская версия:** [README.ru.md](README.ru.md) — этот форк понимает русский язык.
+
 Eleven Claude skills that run a YouTube channel. Free, MIT, no signup, no API key, nothing to
 connect.
 

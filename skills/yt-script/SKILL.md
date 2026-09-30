@@ -6,6 +6,7 @@ description: >-
   marked. Use whenever the user wants a video script, a hook, an opening
   line, "what should I say", "write my next video", or is about to record
   and does not have the first fifteen seconds yet.
+  По-русски: «напиши сценарий», «придумай хук», «первая фраза ролика», «что сказать в начале», «сценарий следующего видео».
 ---
 
 # yt-script
@@ -51,6 +52,18 @@ click the title promised, open a question the viewer cannot close, and prove the
 - the script, beat by beat, with `[ON SCREEN: ...]` on every beat
 - the runtime estimate at 150 words per minute
 - one line naming which formula the winning hook used and why it fits this idea
+
+## Русский язык
+
+- Если пользователь пишет по-русски или его `voice.md` на русском — всё, что отдаёшь, пиши по-русски:
+  живой разговорный язык, который можно произнести вслух, без канцелярита и кальки с английского.
+- Формулы хуков бери из `hooks.json` в русской версии: `name_ru`, `shape_ru`, `example_ru`,
+  `fails_when_ru`. Английские поля — для англоязычных роликов.
+- `hookscore.py` оценивает русские хуки по русским спискам слов и шаблонам `match_ru`; хорошая длина для русского хука — 7–20 слов. Время ролика считай по ~130 словам в минуту, а не по 150.
+- Оценки в русских списках — перевод английской эвристики, отдельной калибровки на русских роликах
+  не было. Низкий балл — повод перечитать, высокий — не обещание.
+- Финальный вопрос по-русски: **публикуем или правим?**
+- На Windows, если `python3` не находится, запускай `python`.
 
 ## The gate
 

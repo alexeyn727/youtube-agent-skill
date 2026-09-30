@@ -4,6 +4,7 @@ description: >-
   Audit a YouTube channel end to end - packaging, consistency, the first
   fifteen seconds, and what to fix first. Use for "audit my channel", "why
   isn't my channel growing", "review my videos", or a pasted channel URL.
+  По-русски: «проверь мой канал», «аудит канала», «почему канал не растёт», «разбери мои ролики».
 ---
 
 # yt-audit
@@ -41,6 +42,18 @@ An audit that lists twenty problems is a way of avoiding the one that matters. T
 - What NOT to do yet, and why.
 
 Never open an audit with praise you do not mean, and never end one with a list of twenty things.
+
+## Русский язык
+
+- Если пользователь пишет по-русски или его `voice.md` на русском — всё, что отдаёшь, пиши по-русски:
+  живой разговорный язык, который можно произнести вслух, без канцелярита и кальки с английского.
+- Формулы хуков бери из `hooks.json` в русской версии: `name_ru`, `shape_ru`, `example_ru`,
+  `fails_when_ru`. Английские поля — для англоязычных роликов.
+- `title.py` и `hookscore.py` сами распознают кириллицу и отвечают по-русски.
+- Оценки в русских списках — перевод английской эвристики, отдельной калибровки на русских роликах
+  не было. Низкий балл — повод перечитать, высокий — не обещание.
+- Финальный вопрос по-русски: **публикуем или правим?**
+- На Windows, если `python3` не находится, запускай `python`.
 
 ## The gate
 

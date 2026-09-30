@@ -5,6 +5,7 @@ description: >-
   what order, sized to the creator's actual capacity. Use for "plan my
   week", "content calendar", "what should I post", "I have no idea what to
   make next".
+  По-русски: «план публикаций», «контент-план», «что снимать на этой неделе», «не знаю, что снимать дальше».
 ---
 
 # yt-plan
@@ -39,6 +40,17 @@ recognises, and the empty days are what make the filled ones survive a bad week.
 A table: day, format, working title, the one sentence it promises, and what already exists for it.
 Then the honest line at the bottom - how many hours this costs, and what to drop first if the week
 goes wrong.
+
+## Русский язык
+
+- Если пользователь пишет по-русски или его `voice.md` на русском — всё, что отдаёшь, пиши по-русски:
+  живой разговорный язык, который можно произнести вслух, без канцелярита и кальки с английского.
+- Формулы хуков бери из `hooks.json` в русской версии: `name_ru`, `shape_ru`, `example_ru`,
+  `fails_when_ru`. Английские поля — для англоязычных роликов.
+- Оценки в русских списках — перевод английской эвристики, отдельной калибровки на русских роликах
+  не было. Низкий балл — повод перечитать, высокий — не обещание.
+- Финальный вопрос по-русски: **публикуем или правим?**
+- На Windows, если `python3` не находится, запускай `python`.
 
 ## The gate
 

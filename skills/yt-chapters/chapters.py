@@ -12,8 +12,12 @@ chapters, which is why this checks instead of trusting.
 Boundaries come from the gaps - the pauses you actually took between sections - scored by how long
 the pause was and how much the vocabulary changes across it. It is a first draft you retitle, not a
 summariser.
+
+Russian transcripts work too: Russian stop words are dropped and words are compared on a crude stem
+(the first five letters), so "канал", "канала" and "каналу" count as one topic word.
 """
 import json, os, re, sys
+if hasattr(sys.stdout, "reconfigure"): sys.stdout.reconfigure(encoding="utf-8")
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "yt-edit"))
 from deadair import load, parse_ts  # noqa: E402  (same parser, one implementation)
 
@@ -21,9 +25,30 @@ STOP = set("the a an of for to in on and or is are was were be been with this th
            "you your i my we our they them he she but so if then than there here what which who how "
            "when where why not no yes do does did just really very like about into over out up down "
            "can could will would should have has had get got make made go going went one two".split())
+STOP |= set("этот эта это эти того тому этом этих этой всех всем всего всегда тоже также только очень "
+            "просто можно нужно надо будет было была были есть быть если когда потом тогда чтобы потому "
+            "который которая которые которых него неё нее него ними себя свой своя свои ваше ваши вашей "
+            "тебе тебя меня мене нами вами сейчас здесь тут вообще короче типа значит самое какой какая "
+            "какие почему зачем вот ещё еще уже даже прямо давайте давай сегодня ролик ролике видео".split())
+
+def is_ru(t): return bool(re.search(r"[а-яё]", t, re.I))
+def stem(w): return w[:5] if re.match(r"[а-я]", w) and len(w) > 5 else w
+def tokens(text): return [w for w in re.findall(r"[a-zа-я']{4,}", text.lower().replace("ё", "е")) if w not in STOP]
 
 def keywords(text):
-    return {w for w in re.findall(r"[a-z']{4,}", text.lower()) if w not in STOP}
+    return {stem(w) for w in tokens(text)}
+
+def title_words(text):
+    """Most frequent topic words, most frequent first. Russian groups word forms by stem and shows
+    the form actually said most often; English keeps the original substring-count ordering."""
+    if not is_ru(text):
+        kw = list(keywords(text))
+        kw.sort(key=lambda w: -text.lower().count(w))
+        return kw
+    forms = {}
+    for w in tokens(text): forms.setdefault(stem(w), []).append(w)
+    ranked = sorted(forms.values(), key=lambda f: -len(f))
+    return [max(sorted(set(f)), key=f.count) for f in ranked]
 
 def mmss(t):
     t = int(t); h, m, s = t // 3600, (t % 3600) // 60, t % 60
@@ -57,16 +82,20 @@ def main():
     for n, t in enumerate(picked):
         end = picked[n + 1] if n + 1 < len(picked) else dur
         text = " ".join(c[2] for c in cues if c[0] >= t and c[1] <= end)
-        kw = [w for w in keywords(text)]
-        kw.sort(key=lambda w: -text.lower().count(w))
-        title = " ".join(w.capitalize() for w in kw[:3]) or "Section"
+        kw = title_words(text)
+        title = " ".join(w.capitalize() for w in kw[:3]) or ("Раздел" if is_ru(text) else "Section")
         chapters.append({"start": round(t, 2), "label": mmss(t), "draft_title": title,
                          "seconds": round(end - t, 2)})
     ok = len(chapters) >= 3 and chapters[0]["start"] == 0 and all(c["seconds"] >= MIN for c in chapters)
     if as_json:
-        print(json.dumps({"valid": ok, "chapters": chapters}, indent=1)); return
+        print(json.dumps({"valid": ok, "chapters": chapters}, indent=1, ensure_ascii=False)); return
     print()
     for c in chapters: print(f"  {c['label']} {c['draft_title']}")
+    if is_ru(" ".join(c[2] for c in cues)):
+        print(f"\n  глав: {len(chapters)}"
+              f"{'' if ok else '  -- НЕ СРАБОТАЕТ: YouTube нужно 3+ главы, первая с 00:00, каждая от 10 секунд'}")
+        print("  Перепишите каждую строку перед вставкой. Это слова темы, а не ваши слова.\n")
+        return
     print(f"\n  {len(chapters)} chapters"
           f"{'' if ok else '  -- INVALID: YouTube needs 3+, a 00:00 first entry and 10s minimum each'}")
     print("  Retitle every line before pasting. These are the topic words, not your words.\n")

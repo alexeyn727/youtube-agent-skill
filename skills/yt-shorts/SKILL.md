@@ -4,6 +4,7 @@ description: >-
   Find the Shorts hiding inside a long video and write them, using the
   transcript to pick self-contained moments. Use for "cut this into shorts",
   "clip this", "repurpose this video", "what should I clip".
+  По-русски: «нарежь шортсы», «сделай шортсы из видео», «какие моменты вырезать в клипы».
 ---
 
 # yt-shorts
@@ -29,6 +30,18 @@ reject one without reading the whole transcript.
 - **On-screen text for the first two seconds**, different words from the spoken line.
 - **A loop point**: what the last line sets up so the first line answers it.
 - Vertical framing note - what gets cropped out of a 16:9 frame and whether that matters.
+
+## Русский язык
+
+- Если пользователь пишет по-русски или его `voice.md` на русском — всё, что отдаёшь, пиши по-русски:
+  живой разговорный язык, который можно произнести вслух, без канцелярита и кальки с английского.
+- Формулы хуков бери из `hooks.json` в русской версии: `name_ru`, `shape_ru`, `example_ru`,
+  `fails_when_ru`. Английские поля — для англоязычных роликов.
+- `hookscore.py` оценивает и русскую первую фразу шортса.
+- Оценки в русских списках — перевод английской эвристики, отдельной калибровки на русских роликах
+  не было. Низкий балл — повод перечитать, высокий — не обещание.
+- Финальный вопрос по-русски: **публикуем или правим?**
+- На Windows, если `python3` не находится, запускай `python`.
 
 ## The gate
 
